@@ -1,0 +1,20 @@
+models:
+  Application:
+    name: string
+    token: string
+    image: longtext nullable
+    user_id: integer
+    softDeletes: true
+    timestamps: true
+    relationships:
+      belongsTo: User
+      belongsToMany: User
+
+  Invite:
+    email: string
+    invite_hash: string nullable
+    city_id: integer
+    user_id: integer
+    timestamps: true
+    relationships:
+      belongsTo: City,User
