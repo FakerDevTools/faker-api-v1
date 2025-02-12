@@ -16,6 +16,8 @@ soffice --infilter="impress_pdf_import" --convert-to pptx source.pdf
 ```
 
 ```
+NameVirtualHost *:7777
+
 <VirtualHost *:7777>
 DocumentRoot "/Users/adam/Desktop/CodeAdam/faker-console-v1/public"
 ServerName local.console.faker.ca
