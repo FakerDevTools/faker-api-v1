@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('application_id');
             $table->enum('status', ["active","inactive"])->default('active');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
