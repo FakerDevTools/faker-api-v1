@@ -25,7 +25,7 @@ class CallFactory extends Factory
             'url' => fake()->url(),
             'ip' => fake()->word(),
             'token_id' => Token::factory(),
-            'reasult' => fake()->randomElement(["success","token","route"]),
+            'reasult' => fake()->randomElement(["success","token","route","demo"]),
         ];
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('url');
             $table->string('ip');
             $table->foreignId('token_id')->nullable();
-            $table->enum('reasult', ["success","token","route"])->default('success');
+            $table->enum('reasult', ["success","token","route","demo"])->default('success');
             $table->timestamps();
         });
     }

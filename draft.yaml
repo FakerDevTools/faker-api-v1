@@ -23,7 +23,7 @@ models:
     url: string
     ip: string
     token_id: integer nullable
-    reasult: enum:success,token,route default:success
+    reasult: enum:success,token,route,demo default:success
     timestamps: true
     relationships:
       belongsTo: Token
