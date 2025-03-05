@@ -19,6 +19,15 @@ models:
     relationships:
       belongsTo: Application
 
+  Call:
+    url: string
+    ip: string
+    token_id: integer nullable
+    reasult: enum:success,token,route default:success
+    timestamps: true
+    relationships:
+      belongsTo: Token
+
   Permission:
     ip: string
     status: enum:deny,allow default:deny

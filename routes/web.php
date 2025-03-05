@@ -18,15 +18,17 @@ use App\Http\Middleware\EnsureTokenIsValid;
 |
 */
 
-Route::get('/', function () { return view('welcome'); });
-Route::get('/error', function () { return view('error'); });
-
 Route::middleware([EnsureTokenIsValid::class])->group(function () {
 
     Route::get('/url-to-pdf', [PdfController::class, 'urlToPdf']);
 
 });
 
-
+Route::get('{any}', function ($any) {
+    return response()->json([
+        'status' => 'error',
+        'message' => 'Invalid route',
+    ]);
+});
 
 

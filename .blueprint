@@ -1,20 +1,24 @@
 created:
     - database/factories/ApplicationFactory.php
     - database/factories/TokenFactory.php
+    - database/factories/CallFactory.php
     - database/factories/PermissionFactory.php
     - database/factories/LogFactory.php
-    - database/migrations/2025_03_05_162804_create_applications_table.php
-    - database/migrations/2025_03_05_162805_create_tokens_table.php
-    - database/migrations/2025_03_05_162806_create_permissions_table.php
-    - database/migrations/2025_03_05_162807_create_logs_table.php
-    - database/migrations/2025_03_05_162808_create_application_user_table.php
+    - database/migrations/2025_03_05_174015_create_applications_table.php
+    - database/migrations/2025_03_05_174016_create_tokens_table.php
+    - database/migrations/2025_03_05_174017_create_calls_table.php
+    - database/migrations/2025_03_05_174018_create_permissions_table.php
+    - database/migrations/2025_03_05_174019_create_logs_table.php
+    - database/migrations/2025_03_05_174020_create_application_user_table.php
     - app/Models/Application.php
     - app/Models/Token.php
+    - app/Models/Call.php
     - app/Models/Permission.php
     - app/Models/Log.php
 models:
     User: { first: string, last: string, email: string, email_verified_at: 'timestamp nullable', github_username: 'string nullable', github_access_token: 'string nullable', reset_hash: 'string nullable', verify_hash: 'string nullable', avatar: 'longtext nullable', password: 'string nullable', session_id: 'string nullable', application_id: 'biginteger unsigned nullable', admin: boolean, remember_token: 'string:100 nullable' }
     Application: { name: string, image: 'longtext nullable', user_id: integer, softdeletes: softDeletes, timestamps: timestamps, relationships: { belongsTo: User, belongsToMany: User } }
     Token: { name: string, hash: string, application_id: integer, status: 'enum:active,inactive default:active', softdeletes: softDeletes, timestamps: timestamps, relationships: { belongsTo: Application } }
+    Call: { url: string, ip: string, token_id: 'integer nullable', reasult: 'enum:success,token,route default:success', timestamps: timestamps, relationships: { belongsTo: Token } }
     Permission: { ip: string, status: 'enum:deny,allow default:deny', application_id: integer, timestamps: timestamps, relationships: { belongsTo: Application } }
     Log: { url: string, ip: string, application_id: integer, token_id: integer, timestamps: timestamps, relationships: { belongsTo: 'Application,Token' } }

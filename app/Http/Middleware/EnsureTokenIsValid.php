@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Models\Token;
+use App\Models\Call;
 
 class EnsureTokenIsValid
 {
@@ -20,18 +21,39 @@ class EnsureTokenIsValid
 
         if(!$request->input('token'))
         {
-            return response()->json(['error' => "Token "], 403);
+            $call = Call::create(array(
+                'ip' => $request->ip(),
+                'url' => $request->fullUrl(),
+                'result' => 'token'
+            ));
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Missing token',
+            ], 403);
         }
 
         $token = Token::where('hash', $request->input('token'))->first();
 
         if (!$token) {
-            return response()->json(['error' => "Token "], 403);
+            $call = Call::create(array(
+                'ip' => $request->ip(),
+                'url' => $request->fullUrl(),
+                'result' => 'token'
+            ));
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid token',
+            ], 403);
         }
 
-        dd($token);
-        die();
-
+        $call = Call::create(array(
+            'ip' => $request->ip(),
+            'url' => $request->fullUrl(),
+            'token_id' => $token['id'],
+            'result' => 'success'
+        ));
  
         return $next($request);
     }
