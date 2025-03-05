@@ -5,16 +5,16 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Application;
-use App\Models\User;
+use App\Models\Permission;
 
-class ApplicationFactory extends Factory
+class PermissionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Application::class;
+    protected $model = Permission::class;
 
     /**
      * Define the model's default state.
@@ -22,9 +22,9 @@ class ApplicationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'image' => fake()->text(),
-            'user_id' => User::factory(),
+            'ip' => fake()->word(),
+            'status' => fake()->randomElement(["deny","allow"]),
+            'application_id' => Application::factory(),
         ];
     }
 }

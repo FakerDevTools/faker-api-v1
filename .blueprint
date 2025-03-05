@@ -1,12 +1,20 @@
 created:
     - database/factories/ApplicationFactory.php
-    - database/factories/InviteFactory.php
-    - database/migrations/2025_02_11_231628_create_applications_table.php
-    - database/migrations/2025_02_11_231629_create_invites_table.php
-    - database/migrations/2025_02_11_231630_create_application_user_table.php
+    - database/factories/TokenFactory.php
+    - database/factories/PermissionFactory.php
+    - database/factories/LogFactory.php
+    - database/migrations/2025_03_04_214213_create_applications_table.php
+    - database/migrations/2025_03_04_214214_create_tokens_table.php
+    - database/migrations/2025_03_04_214215_create_permissions_table.php
+    - database/migrations/2025_03_04_214216_create_logs_table.php
+    - database/migrations/2025_03_04_214217_create_application_user_table.php
     - app/Models/Application.php
-    - app/Models/Invite.php
+    - app/Models/Token.php
+    - app/Models/Permission.php
+    - app/Models/Log.php
 models:
-    User: { first: string, last: string, email: string, email_verified_at: 'timestamp nullable', github_username: 'string nullable', github_access_token: 'string nullable', url: 'string nullable', reset_hash: 'string nullable', verify_hash: 'string nullable', avatar: 'longtext nullable', password: 'string nullable', session_id: 'string nullable', city_id: 'biginteger unsigned nullable', admin: boolean, remember_token: 'string:100 nullable' }
-    Application: { name: string, token: string, image: 'longtext nullable', user_id: integer, softdeletes: softDeletes, timestamps: timestamps, relationships: { belongsTo: User, belongsToMany: User } }
-    Invite: { email: string, invite_hash: 'string nullable', city_id: integer, user_id: integer, timestamps: timestamps, relationships: { belongsTo: 'City,User' } }
+    User: { first: string, last: string, email: string, email_verified_at: 'timestamp nullable', github_username: 'string nullable', github_access_token: 'string nullable', reset_hash: 'string nullable', verify_hash: 'string nullable', avatar: 'longtext nullable', password: 'string nullable', session_id: 'string nullable', application_id: 'biginteger unsigned nullable', admin: boolean, remember_token: 'string:100 nullable' }
+    Application: { name: string, image: 'longtext nullable', user_id: integer, softdeletes: softDeletes, timestamps: timestamps, relationships: { belongsTo: User, belongsToMany: User } }
+    Token: { name: string, hash: string, application_id: integer, status: 'enum:active,inactive default:active', timestamps: timestamps, relationships: { belongsTo: Application } }
+    Permission: { ip: string, status: 'enum:deny,allow default:deny', application_id: integer, timestamps: timestamps, relationships: { belongsTo: Application } }
+    Log: { url: string, ip: string, application_id: integer, token_id: integer, timestamps: timestamps, relationships: { belongsTo: 'Application,Token' } }

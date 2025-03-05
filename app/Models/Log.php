@@ -5,12 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Application extends Model
+class Log extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +16,10 @@ class Application extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'image',
-        'user_id',
+        'url',
+        'ip',
+        'application_id',
+        'token_id',
     ];
 
     /**
@@ -30,16 +29,17 @@ class Application extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'user_id' => 'integer',
+        'application_id' => 'integer',
+        'token_id' => 'integer',
     ];
 
-    public function user(): BelongsTo
+    public function application(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Application::class);
     }
 
-    public function users(): BelongsToMany
+    public function token(): BelongsTo
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(Token::class);
     }
 }

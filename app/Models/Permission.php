@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Invite extends Model
+class Permission extends Model
 {
     use HasFactory;
 
@@ -16,10 +16,9 @@ class Invite extends Model
      * @var array
      */
     protected $fillable = [
-        'email',
-        'invite_hash',
-        'city_id',
-        'user_id',
+        'ip',
+        'status',
+        'application_id',
     ];
 
     /**
@@ -29,17 +28,11 @@ class Invite extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'city_id' => 'integer',
-        'user_id' => 'integer',
+        'application_id' => 'integer',
     ];
 
-    public function city(): BelongsTo
+    public function application(): BelongsTo
     {
-        return $this->belongsTo(City::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Application::class);
     }
 }

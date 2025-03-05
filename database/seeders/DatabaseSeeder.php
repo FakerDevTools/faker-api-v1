@@ -5,8 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-use App\Models\Application;
 use Carbon\Carbon;
+use Faker\Generator;
+
+use App\Models\Application;
+use App\Models\Token;
 use App\Models\User;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +19,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $faker = app(Generator::class);
 
         // **************************************************
         // **************************************************
@@ -44,10 +49,9 @@ class DatabaseSeeder extends Seeder
         // **************************************************
         // **************************************************
         // **************************************************
-        // Cities
+        // Applications and Tokens
         $application= Application::factory()->create([
-            'name' => 'Smart City',
-            'token' => '1234567890',
+            'name' => 'Smart City Application',
             'image' => '',
             'user_id' => $user,
         ]);
@@ -55,14 +59,34 @@ class DatabaseSeeder extends Seeder
         $application->users()->save($user);
         $user->application_id = $application->id;
 
+        $token = Token::factory()->create([
+            'name' => 'Token 1',
+            'hash' => '12345678901234567890',
+            'application_id' => $application,
+            'status' => 'active',
+        ])->save();
+
+        $token = Token::factory()->create([
+            'name' => 'Token 2',
+            'hash' => $faker->regexify('[A-Z0-9]{20}'),
+            'application_id' => $application,
+            'status' => 'active',
+        ])->save();
+
         $application = Application::factory()->create([
             'name' => 'Second Application',
-            'token' => '0987654321',
             'image' => '',
             'user_id' => $user,
         ]);
 
         $application->users()->save($user);
+
+        $token = Token::factory()->create([
+            'name' => 'Token 3',
+            'hash' => $faker->regexify('[A-Z0-9]{20}'),
+            'application_id' => $application,
+            'status' => 'active',
+        ])->save();
 
     }
 }

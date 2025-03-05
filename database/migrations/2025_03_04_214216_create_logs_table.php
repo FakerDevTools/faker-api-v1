@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invites', function (Blueprint $table) {
+        Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
-            $table->string('invite_hash')->nullable();
-            $table->foreignId('city_id');
-            $table->foreignId('user_id');
+            $table->string('url');
+            $table->string('ip');
+            $table->foreignId('application_id');
+            $table->foreignId('token_id');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invites');
+        Schema::dropIfExists('logs');
     }
 };

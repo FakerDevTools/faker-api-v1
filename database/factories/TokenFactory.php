@@ -4,18 +4,17 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\City;
-use App\Models\Invite;
-use App\Models\User;
+use App\Models\Application;
+use App\Models\Token;
 
-class InviteFactory extends Factory
+class TokenFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Invite::class;
+    protected $model = Token::class;
 
     /**
      * Define the model's default state.
@@ -23,10 +22,10 @@ class InviteFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => $this->faker->safeEmail(),
-            'invite_hash' => $this->faker->word(),
-            'city_id' => City::factory(),
-            'user_id' => User::factory(),
+            'name' => fake()->name(),
+            'hash' => fake()->word(),
+            'application_id' => Application::factory(),
+            'status' => fake()->randomElement(["active","inactive"]),
         ];
     }
 }

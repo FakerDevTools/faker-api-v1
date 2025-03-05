@@ -1,7 +1,6 @@
 models:
   Application:
     name: string
-    token: string
     image: longtext nullable
     user_id: integer
     softDeletes: true
@@ -10,7 +9,33 @@ models:
       belongsTo: User
       belongsToMany: User
 
-  Invite:
+  Token:
+    name: string
+    hash: string
+    application_id: integer
+    status: enum:active,inactive default:active
+    timestamps: true
+    relationships:
+      belongsTo: Application
+
+  Permission:
+    ip: string
+    status: enum:deny,allow default:deny
+    application_id: integer
+    timestamps: true
+    relationships:
+      belongsTo: Application
+    
+  Log:
+    url: string
+    ip: string
+    application_id: integer
+    token_id: integer
+    timestamps: true
+    relationships:
+      belongsTo: Application,Token
+
+Invite:
     email: string
     invite_hash: string nullable
     city_id: integer
