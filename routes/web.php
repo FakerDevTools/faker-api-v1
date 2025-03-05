@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PdfController;
 
+use App\Http\Middleware\EnsureTokenIsValid;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,8 +18,15 @@ use App\Http\Controllers\PdfController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function () { return view('welcome'); });
+Route::get('/error', function () { return view('error'); });
+
+Route::middleware([EnsureTokenIsValid::class])->group(function () {
+
+    Route::get('/url-to-pdf', [PdfController::class, 'urlToPdf']);
+
 });
 
-Route::get('/url-to-pdf', [PdfController::class, 'urlToPdf']);
+
+
+
