@@ -4,18 +4,17 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Call;
+use App\Models\Application;
 use App\Models\Ip;
-use App\Models\Token;
 
-class CallFactory extends Factory
+class IpFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Call::class;
+    protected $model = Ip::class;
 
     /**
      * Define the model's default state.
@@ -23,11 +22,9 @@ class CallFactory extends Factory
     public function definition(): array
     {
         return [
-            'url' => fake()->url(),
             'address' => fake()->word(),
-            'ip_id' => Ip::factory(),
-            'token_id' => Token::factory(),
-            'result' => fake()->randomElement(["success","token","route","demo"]),
+            'application_id' => Application::factory(),
+            'status' => fake()->randomElement(["allowed","blocked","pending"]),
         ];
     }
 }

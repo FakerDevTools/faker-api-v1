@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Models\Token;
 use App\Models\Call;
+use App\Models\Ip;
 
 class EnsureTokenIsValid
 {
@@ -19,12 +20,13 @@ class EnsureTokenIsValid
     public function handle(Request $request, Closure $next): Response
     {
 
+        // No token is provided
         if(!$request->input('token'))
         {
             $call = Call::create(array(
-                'ip' => $request->ip(),
+                'address' => $request->ip(),
                 'url' => $request->fullUrl(),
-                'result' => 'token'
+                'result' => 'token',
             ));
 
             return response()->json([
@@ -33,13 +35,38 @@ class EnsureTokenIsValid
             ], 403);
         }
 
+        // Demo token is provided
+        if($request->input('token') == 'demo')
+        {
+            $call = Call::create(array(
+                'address' => $request->ip(),
+                'url' => $request->fullUrl(),
+                'result' => 'demo',
+            ));
+
+            return $next($request);
+        }
+
+        // Fetch the token record using the hash
         $token = Token::where('hash', $request->input('token'))->first();
+
+        // Check if the IP address is already in use
+        $ip = Ip::where('address', $request->ip())->first();
+
+        // If there is no IP add one
+        if(!$ip)
+        {
+            $ip = Ip::create([
+                'address' => $request->ip(),
+                'application_id' => $token['application_id'],
+            ]);
+        }
 
         if (!$token) {
             $call = Call::create(array(
-                'ip' => $request->ip(),
+                'address' => $request->ip(),
                 'url' => $request->fullUrl(),
-                'result' => 'token'
+                'result' => 'token',
             ));
 
             return response()->json([
@@ -49,12 +76,15 @@ class EnsureTokenIsValid
         }
 
         $call = Call::create(array(
-            'ip' => $request->ip(),
+            'address' => $request->ip(),
             'url' => $request->fullUrl(),
             'token_id' => $token['id'],
-            'result' => 'success'
+            'ip_id' => $ip['id'],
+            'result' => 'success',
         ));
  
+        die('SUCCESS');
+
         return $next($request);
     }
 

@@ -21,12 +21,22 @@ models:
 
   Call:
     url: string
-    ip: string
+    address: string nullable
+    ip_id: integer nullable
     token_id: integer nullable
-    reasult: enum:success,token,route,demo default:success
+    result: enum:success,token,route,demo default:success
     timestamps: true
     relationships:
-      belongsTo: Token
+      belongsTo: Token,Ip
+
+  Ip:
+    address: string nullable
+    application_id: integer
+    status: enum:allowed,blocked,pending default:allowed
+    timestamps: true
+    relationships:
+      belongsTo: Application
+      hasMany: Call
 
   Permission:
     ip: string

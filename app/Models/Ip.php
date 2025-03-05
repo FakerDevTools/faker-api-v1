@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Call extends Model
+class Ip extends Model
 {
     use HasFactory;
 
@@ -16,11 +17,9 @@ class Call extends Model
      * @var array
      */
     protected $fillable = [
-        'url',
         'address',
-        'ip_id',
-        'token_id',
-        'result',
+        'application_id',
+        'status',
     ];
 
     /**
@@ -30,17 +29,16 @@ class Call extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'ip_id' => 'integer',
-        'token_id' => 'integer',
+        'application_id' => 'integer',
     ];
 
-    public function token(): BelongsTo
+    public function application(): BelongsTo
     {
-        return $this->belongsTo(Token::class);
+        return $this->belongsTo(Application::class);
     }
 
-    public function ip(): BelongsTo
+    public function calls(): HasMany
     {
-        return $this->belongsTo(Ip::class);
+        return $this->hasMany(Call::class);
     }
 }

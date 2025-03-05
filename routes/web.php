@@ -1,11 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\PdfController;
 
 use App\Http\Middleware\EnsureTokenIsValid;
 
+use App\Models\Call;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,11 +26,19 @@ Route::middleware([EnsureTokenIsValid::class])->group(function () {
 
 });
 
-Route::get('{any}', function ($any) {
+Route::fallback(function(Request $request) {
+    
+    Call::create(array(
+        'address' => $request->ip(),
+        'url' => $request->fullUrl(),
+        'result' => 'route',
+    ));
+
     return response()->json([
         'status' => 'error',
         'message' => 'Invalid route',
     ]);
+
 });
 
 

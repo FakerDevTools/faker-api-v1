@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('calls', function (Blueprint $table) {
+        Schema::create('ips', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
-            $table->string('ip');
-            $table->foreignId('token_id')->nullable();
-            $table->enum('reasult', ["success","token","route","demo"])->default('success');
+            $table->string('address')->nullable();
+            $table->foreignId('application_id');
+            $table->enum('status', ["allowed","blocked","pending"])->default('allowed');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('calls');
+        Schema::dropIfExists('ips');
     }
 };
